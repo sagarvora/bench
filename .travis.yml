@@ -17,7 +17,7 @@ install:
   - cp -r $TRAVIS_BUILD_DIR/* ~/.bench
   - cp -r $TRAVIS_BUILD_DIR/* /tmp/.bench
 
-  - sudo python ~/.bench/playbooks/install.py --user travis --run-travis --production
+  - sudo python ~/.bench/playbooks/install.py --user travis --run-travis --develop
   # - sudo bash $TRAVIS_BUILD_DIR/install_scripts/setup_frappe.sh --skip-install-bench --mysql-root-password travis
   # - cd ~ && sudo python bench-repo/installer/install.py --only-dependencies
 
