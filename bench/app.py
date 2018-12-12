@@ -92,7 +92,7 @@ def remove_from_excluded_apps_txt(app, bench_path='.'):
 		return write_excluded_apps_txt(apps, bench_path=bench_path)
 
 def get_app(git_url, branch=None, bench_path='.', build_asset_files=True, verbose=False,
-	postprocess=True, reference=None):
+	postprocess=True, reference=None, install_docs=True):
 	# from bench.utils import check_url
 	try:
 		from urlparse import urljoin
@@ -137,14 +137,15 @@ def get_app(git_url, branch=None, bench_path='.', build_asset_files=True, verbos
 	install_app(app=app_name, bench_path=bench_path, verbose=verbose)
 
 	if postprocess:
-		# get apps for docs
-		if repo_name=='frappe':
-			get_app('https://github.com/frappe/frappe_io', bench_path = bench_path,
-				branch= 'master', postprocess = False)
+		if install_docs:
+			# get apps for docs
+			if repo_name=='frappe':
+				get_app('https://github.com/frappe/frappe_io', 
+				bench_path = bench_path, branch= 'master', postprocess = False)
 
-		if repo_name=='erpnext':
-			get_app('https://github.com/erpnext/foundation', bench_path = bench_path,
-				branch= 'master', postprocess = False)
+			if repo_name=='erpnext':
+				get_app('https://github.com/erpnext/foundation', 
+				bench_path = bench_path, branch= 'master', postprocess = False)
 
 		if build_asset_files:
 			build_assets(bench_path=bench_path)
@@ -171,7 +172,6 @@ def new_app(app, bench_path='.'):
 
 def install_app(app, bench_path='.', verbose=False, no_cache=False):
 	logger.info('installing {}'.format(app))
-	# find_links = '--find-links={}'.format(conf.get('wheel_cache_dir')) if conf.get('wheel_cache_dir') else ''
 	find_links = ''
 	exec_cmd("{pip} install {quiet} {find_links} -e {app} {no_cache}".format(
 				pip=os.path.join(bench_path, 'env', 'bin', 'pip'),

@@ -34,10 +34,10 @@ def get_env_cmd(cmd, bench_path='.'):
 	return os.path.abspath(os.path.join(bench_path, 'env', 'bin', cmd))
 
 def init(path, apps_path=None, no_procfile=False, no_backups=False,
-		no_auto_update=False, frappe_path=None, frappe_branch=None, wheel_cache_dir=None,
+		no_auto_update=False, frappe_path=None, frappe_branch=None, frappe_ref=None,
 		verbose=False, clone_from=None, skip_redis_config_generation=False,
-		clone_without_update=False, ignore_exist = False, reference=None,
-		python		 = 'python'): # Let's change when we're ready. - <achilles@frappe.io>
+		clone_without_update=False, ignore_exist = False, install_docs=True,
+		skip_build=False, python='python'): # Let's change when we're ready. - <achilles@frappe.io>
 	from .app import get_app, install_apps_from_path
 	from .config.common_site_config import make_config
 	from .config import redis
@@ -71,8 +71,8 @@ def init(path, apps_path=None, no_procfile=False, no_backups=False,
 		if not frappe_path:
 			frappe_path = 'https://github.com/frappe/frappe.git'
 
-		get_app(frappe_path, branch=frappe_branch, bench_path=path,
-			build_asset_files=False, verbose=verbose, reference=reference)
+		get_app(frappe_path, branch=frappe_branch, bench_path=path, reference=frappe_ref,
+			build_asset_files=False, verbose=verbose, install_docs=install_docs)
 
 		if apps_path:
 			install_apps_from_path(apps_path, bench_path=path)
@@ -83,7 +83,8 @@ def init(path, apps_path=None, no_procfile=False, no_backups=False,
 		update_node_packages(bench_path=path)
 
 	set_all_patches_executed(bench_path=path)
-	build_assets(bench_path=path)
+	if not skip_build:
+		build_assets(bench_path=path)
 
 	if not skip_redis_config_generation:
 		redis.generate_config(path)

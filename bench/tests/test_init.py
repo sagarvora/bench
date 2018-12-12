@@ -165,9 +165,11 @@ class TestBenchInit(unittest.TestCase):
 
 	def init_bench(self, bench_name, **kwargs):
 		self.benches.append(bench_name)
+		kwargs['skip_build'] = True
+		kwargs['install_docs'] = False
 
 		if os.environ.get('CI'):
-			kwargs['reference'] = '~/frappe'
+			kwargs['frappe_ref'] = '~/frappe'
 
 		bench.utils.init(bench_name, **kwargs)
 
