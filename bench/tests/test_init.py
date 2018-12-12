@@ -118,7 +118,7 @@ class TestBenchInit(unittest.TestCase):
 		bench_path = os.path.join(self.benches_path, "test-bench")
 
 		# get app
-		bench.app.get_app("https://github.com/frappe/erpnext", "develop", bench_path=bench_path)
+		bench.app.get_app("https://github.com/frappe/erpnext", "develop", bench_path=bench_path, build_asset_files=False)
 
 		self.assertTrue(os.path.exists(os.path.join(bench_path, "apps", "erpnext")))
 
@@ -138,7 +138,7 @@ class TestBenchInit(unittest.TestCase):
 		bench_path = os.path.join(self.benches_path, "test-bench")
 
 		# get app
-		bench.app.get_app("https://github.com/frappe/erpnext", "develop", bench_path=bench_path)
+		bench.app.get_app("https://github.com/frappe/erpnext", "develop", bench_path=bench_path, build_asset_files=False)
 
 		self.assertTrue(os.path.exists(os.path.join(bench_path, "apps", "erpnext")))
 
@@ -165,6 +165,10 @@ class TestBenchInit(unittest.TestCase):
 
 	def init_bench(self, bench_name, **kwargs):
 		self.benches.append(bench_name)
+
+		if os.environ.get('CI'):
+			kwargs['reference'] = '~/frappe'
+
 		bench.utils.init(bench_name, **kwargs)
 
 	def test_drop_site(self):

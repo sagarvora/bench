@@ -36,8 +36,7 @@ def get_env_cmd(cmd, bench_path='.'):
 def init(path, apps_path=None, no_procfile=False, no_backups=False,
 		no_auto_update=False, frappe_path=None, frappe_branch=None, wheel_cache_dir=None,
 		verbose=False, clone_from=None, skip_redis_config_generation=False,
-		clone_without_update=False,
-		ignore_exist = False,
+		clone_without_update=False, ignore_exist = False, reference=None,
 		python		 = 'python'): # Let's change when we're ready. - <achilles@frappe.io>
 	from .app import get_app, install_apps_from_path
 	from .config.common_site_config import make_config
@@ -72,7 +71,8 @@ def init(path, apps_path=None, no_procfile=False, no_backups=False,
 		if not frappe_path:
 			frappe_path = 'https://github.com/frappe/frappe.git'
 
-		get_app(frappe_path, branch=frappe_branch, bench_path=path, build_asset_files=False, verbose=verbose)
+		get_app(frappe_path, branch=frappe_branch, bench_path=path,
+			build_asset_files=False, verbose=verbose, reference=reference)
 
 		if apps_path:
 			install_apps_from_path(apps_path, bench_path=path)

@@ -26,6 +26,7 @@ jobs:
             cd ~
             sudo pip install --upgrade pip
             sudo pip install -e ~/.bench
+            git clone https://github.com/frappe/frappe
 
       - run:
           name: Run Tests

@@ -92,7 +92,7 @@ def remove_from_excluded_apps_txt(app, bench_path='.'):
 		return write_excluded_apps_txt(apps, bench_path=bench_path)
 
 def get_app(git_url, branch=None, bench_path='.', build_asset_files=True, verbose=False,
-	postprocess = True):
+	postprocess=True, reference=None):
 	# from bench.utils import check_url
 	try:
 		from urlparse import urljoin
@@ -116,8 +116,10 @@ def get_app(git_url, branch=None, bench_path='.', build_asset_files=True, verbos
 	logger.info('getting app {}'.format(repo_name))
 	shallow_clone = '--depth 1' if check_git_for_shallow_clone() else ''
 	branch = '--branch {branch}'.format(branch=branch) if branch else ''
+	reference = '--reference {reference}'.format(reference=reference) if reference else '' 
 
-	exec_cmd("git clone {git_url} {branch} {shallow_clone} --origin upstream".format(
+	exec_cmd("git clone {reference} {git_url} {branch} {shallow_clone} --origin upstream".format(
+				reference=reference,
 				git_url=git_url,
 				shallow_clone=shallow_clone,
 				branch=branch),
