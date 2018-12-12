@@ -18,7 +18,7 @@ jobs:
 
       - run:
           name: Install Bench (Production)
-          command: sudo python ~/repo/playbooks/install.py --user travis --run-travis --production
+          command: sudo python ~/repo/playbooks/install.py --user circleci --run-travis --production
 
       - run:
           name: Setup Tests
